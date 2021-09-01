@@ -19,14 +19,14 @@ namespace DelvUI {
         public int HealthBarWidth { get; set; } = 270;
         public int HealthBarXOffset { get; set; } = 160;
         public int HealthBarYOffset { get; set; } = 460;
-        public int PrimaryResourceBarHeight { get; set; } = 13;
+        public int PrimaryResourceBarHeight { get; set; } = 20;
         public int PrimaryResourceBarWidth { get; set; } = 254;
         public int PrimaryResourceBarXOffset { get; set; } = 160;
-        public int PrimaryResourceBarYOffset { get; set; } = 460;
+        public int PrimaryResourceBarYOffset { get; set; } = 455;
         public int TargetBarHeight { get; set; } = 50;
         public int TargetBarWidth { get; set; } = 270;
         public int TargetBarXOffset { get; set; } = 160;
-        public int TargetBarYOffset { get; set; } = 460;
+        public int TargetBarYOffset { get; set; } = 455;
         public int ToTBarHeight { get; set; } = 20;
         public int ToTBarWidth { get; set; } = 120;
         public int ToTBarXOffset { get; set; } = 164;
@@ -149,17 +149,17 @@ namespace DelvUI {
 
         
         #region BRD Configuration
-        
+
         public int BRDBaseXOffset { get; set; } = 127;
-        public int BRDBaseYOffset { get; set; } = 405;
+        public int BRDBaseYOffset { get; set; } = 415;
         public int BRDSongGaugeWidth { get; set; } = 254;
         public int BRDSongGaugeHeight { get; set; } = 20;
         public int BRDSongGaugeXOffset { get; set; }
-        public int BRDSongGaugeYOffset { get; set; }
+        public int BRDSongGaugeYOffset { get; set; } = 12;
         public int BRDSoulGaugeWidth { get; set; } = 254;
         public int BRDSoulGaugeHeight { get; set; } = 10;
         public int BRDSoulGaugeXOffset { get; set; }
-        public int BRDSoulGaugeYOffset { get; set; }
+        public int BRDSoulGaugeYOffset { get; set; } = 34;
         public int BRDStackWidth { get; set; } = 254;
         public int BRDStackHeight { get; set; } = 10;
         public int BRDStackXOffset { get; set; }
@@ -168,13 +168,12 @@ namespace DelvUI {
         public int BRDCBWidth { get; set; } = 126;
         public int BRDCBHeight { get; set; } = 10;
         public int BRDCBXOffset { get; set; }
-        public int BRDCBYOffset { get; set; }
+        public int BRDCBYOffset { get; set; } = -12;
         public int BRDSBWidth { get; set; } = 126;
         public int BRDSBHeight { get; set; } = 10;
         public int BRDSBXOffset { get; set; } = 128;
-        public int BRDSBYOffset { get; set; }
-        public int BRDInterBarOffset { get; set; } = 2;
-        
+        public int BRDSBYOffset { get; set; } = -12;
+
         public bool BRDShowSB = true;
         public bool BRDShowCB = true;
         public bool BRDSBInverted = false;
@@ -184,7 +183,7 @@ namespace DelvUI {
         public bool BRDShowWMStacks = true;
         public bool BRDShowMBProc = true;
         public bool BRDShowAPStacks = true;
-        
+
         public Vector4 BRDEmptyColor = new Vector4(0f/255f, 0f/255f, 0f/255f, 53f/100f);
         public Vector4 BRDExpireColor = new Vector4(199f/255f, 46f/255f, 46f/255f, 100f/100f);
         public Vector4 BRDCBColor = new Vector4(182f/255f, 68f/255f, 235f/255f, 100f/100f);
@@ -227,16 +226,16 @@ namespace DelvUI {
         public int FairyBarHeight { get; set; } = 20;
         public int FairyBarWidth { get; set; } = 254;
         public int FairyBarX { get; set; } = 127;
-        public int FairyBarY { get; set; } = 450;
+        public int FairyBarY { get; set; } = 444;
         public int SchAetherBarHeight { get; set; } = 20;
         public int SchAetherBarWidth { get; set; } = 250;
         public int SchAetherBarX { get; set; } = -42;
-        public int SchAetherBarY { get; set; } = 450;
+        public int SchAetherBarY { get; set; } = 444;
         public int SchAetherBarPad { get; set; } = 2;
         public int SCHBioBarHeight { get; set; } = 20;
         public int SCHBioBarWidth { get; set; } = 254;
         public int SCHBioBarX { get; set; } = 127;
-        public int SCHBioBarY { get; set; } = 423;
+        public int SCHBioBarY { get; set; } = 417;
 
         public bool SCHShowBioBar = true;
         public bool SCHShowAetherBar = true;
@@ -254,17 +253,17 @@ namespace DelvUI {
         public int LillyBarHeight { get; set; } = 20;
         public int LillyBarWidth { get; set; } = 254;
         public int LillyBarX { get; set; } = 127;
-        public int LillyBarY { get; set; } = 421;
+        public int LillyBarY { get; set; } = 415;
         public int LillyBarPad { get; set; } = 2;
         public int BloodLillyBarHeight { get; set; } = 20;
         public int BloodLillyBarWidth { get; set; } = 254;
         public int BloodLillyBarX { get; set; } = 42;
-        public int BloodLillyBarY { get; set; } = 421;
+        public int BloodLillyBarY { get; set; } = 415;
         public int BloodLillyBarPad { get; set; } = 2;
         public int DiaBarHeight { get; set; } = 20;
         public int DiaBarWidth { get; set; } = 254;
         public int DiaBarX { get; set; } = 127;
-        public int DiaBarY { get; set; } = 423;
+        public int DiaBarY { get; set; } = 417;
 
         public bool WHMShowDiaBar = true;
         public bool WHMShowLillyBar = true;
@@ -283,25 +282,25 @@ namespace DelvUI {
 
         public int ASTDrawBarHeight { get; set; } = 20;
         public int ASTDrawBarWidth { get; set; } = 254;
-        public int ASTDrawBarX { get; set; } = -127;
-        public int ASTDrawBarY { get; set; } = 400;
+        public int ASTDrawBarX { get; set; } = 33;
+        public int ASTDrawBarY { get; set; } = -65;
         public int ASTDivinationHeight { get; set; } = 20;
         public int ASTDivinationWidth { get; set; } = 254;
-        public int ASTDivinationBarX { get; set; } = -127;
-        public int ASTDivinationBarY { get; set; } = 378;
+        public int ASTDivinationBarX { get; set; } = 33;
+        public int ASTDivinationBarY { get; set; } = -87;
         public int ASTDivinationBarPad { get; set; } = 1;
         public int ASTDotBarHeight { get; set; } = 20;
         public int ASTDotBarWidth { get; set; } = 254;
         public int ASTDotBarX { get; set; } = 33;
-        public int ASTDotBarY { get; set; } = -38;
+        public int ASTDotBarY { get; set; } = -43;
         public int ASTStarBarHeight { get; set; } = 86;
         public int ASTStarBarWidth { get; set; } = 20;
         public int ASTStarBarX { get; set; } = 11;
-        public int ASTStarBarY { get; set; } = -82;
+        public int ASTStarBarY { get; set; } = -87;
         public int ASTLightspeedBarHeight { get; set; } = 86;
         public int ASTLightspeedBarWidth { get; set; } = 20;
         public int ASTLightspeedBarX { get; set; } = 289;
-        public int ASTLightspeedBarY { get; set; } = -82;
+        public int ASTLightspeedBarY { get; set; } = -87;
         public bool ASTShowDivinationBar = true;
         public bool ASTShowDrawBar = true;
         public bool ASTShowDotBar = true;
@@ -332,7 +331,7 @@ namespace DelvUI {
         public int SmnBioBarWidth { get; set; } = 126;
         public int SmnBioBarHeight { get; set; } = 20;
         public int SmnBioBarXOffset { get; set; } = 128;
-        public int SmnBioBarYOffset { get; set; }
+        public int SmnBioBarYOffset { get; set; } 
         public bool SmnBioBarFlipped { get; set; } = true;
         public int SmnInterBarOffset { get; set; } = 2;
         public bool SmnRuinBarEnabled { get; set; } = true;
@@ -550,12 +549,19 @@ namespace DelvUI {
         public int PLDAtonementBarPadding { get; set; } = 2;
         public int PLDAtonementBarXOffset { get; set; } = 127;
         public int PLDAtonementBarYOffset { get; set; } = 439;
+        public bool PLDDoTBarEnabled { get; set; } = true;
+        public int PLDDoTBarHeight { get; set; } = 20;
+        public int PLDDoTBarWidth { get; set; } = 254;
+        public int PLDDoTBarXOffset { get; set; } = 127;
+        public int PLDDoTBarYOffset { get; set; } = 351;
+        public bool PLDDoTBarText { get; set; }
         public Vector4 PLDManaColor = new Vector4(0f/255f, 203f/255f, 230f/255f, 100f/100f);
         public Vector4 PLDOathGaugeColor = new Vector4(24f/255f, 80f/255f, 175f/255f, 100f/100f);
         public Vector4 PLDFightOrFlightColor = new Vector4(240f/255f, 50f/255f, 0f/255f, 100f/100f);
         public Vector4 PLDRequiescatColor = new Vector4(61f/255f, 61f/255f, 255f/255f, 100f/100f);
         public Vector4 PLDEmptyColor = new Vector4(143f/255f, 141f/255f, 142f/255f, 100f/100f);
         public Vector4 PLDAtonementColor = new Vector4(240f/255f, 176f/255f, 0f/255f, 100f/100f);
+        public Vector4 PLDDoTColor = new Vector4(255f/255f, 128f/255f, 0f/255f, 100f/100f); 
 
         #endregion
 
@@ -731,6 +737,62 @@ namespace DelvUI {
 
         #endregion
 
+        #region DNC Configuration
+
+        public bool DNCEspritEnabled { get; set; } = true;
+        public bool DNCEspritText { get; set; } = true;
+        public int DNCEspritHeight { get; set; } = 20;
+        public int DNCEspritWidth { get; set; } = 254;
+        public int DNCEspritXOffset { get; set; } = 127;
+        public int DNCEspritYOffset { get; set; } = 395;
+        public int DNCEspritPadding { get; set; } = 2;
+        public bool DNCFeatherEnabled { get; set; } = true;
+        public bool DNCFlourishingProcGlowEnabled { get; set; } = true;
+        public int DNCFeatherHeight { get; set; } = 13;
+        public int DNCFeatherWidth { get; set; } = 254;
+        public int DNCFeatherXOffset { get; set; } = 127;
+        public int DNCFeatherYOffset { get; set; } = 380;
+        public int DNCFeatherPadding { get; set; } = 2;
+        public bool DNCBuffEnabled { get; set; } = true;
+        public bool DNCTechnicalBarEnabled { get; set; } = true;
+        public bool DNCTechnicalTextEnabled { get; set; } = true;
+        public bool DNCDevilmentBarEnabled { get; set; } = false;
+        public bool DNCDevilmentTextEnabled { get; set; } = true;
+        public int DNCBuffHeight { get; set; } = 20;
+        public int DNCBuffWidth { get; set; } = 254;
+        public int DNCBuffXOffset { get; set; } = 127;
+        public int DNCBuffYOffset { get; set; } = 417;
+        public bool DNCStandardEnabled { get; set; } = true;
+        public bool DNCStandardText { get; set; } = true;
+        public int DNCStandardHeight { get; set; } = 20;
+        public int DNCStandardWidth { get; set; } = 254;
+        public int DNCStandardXOffset { get; set; } = 127;
+        public int DNCStandardYOffset { get; set; } = 439;
+        public bool DNCStepEnabled { get; set; } = true;
+        public bool DNCStepGlowEnabled { get; set; } = true;
+        public bool DNCDanceReadyGlowEnabled { get; set; } = true;
+        public int DNCStepHeight { get; set; } = 13;
+        public int DNCStepWidth { get; set; } = 254;
+        public int DNCStepXOffset { get; set; } = 127;
+        public int DNCStepYOffset { get; set; } = 365;
+        public int DNCStepPadding { get; set; } = 2;
+        
+        public Vector4 DNCEspritColor = new Vector4(72f/255f, 20f/255f, 99f/255f, 100f/100f);
+        public Vector4 DNCFeatherColor = new Vector4(175f/255f, 229f/255f, 29f/255f, 100f/100f);
+        public Vector4 DNCFlourishingProcColor = new Vector4(255f/255f, 215f/255f, 0f/255f, 100f/100f);
+        public Vector4 DNCStandardFinishColor = new Vector4(0f/255f, 193f/255f, 95f/255f, 100f/100f);
+        public Vector4 DNCTechnicalFinishColor = new Vector4(255f/255f, 9f/255f, 102f/255f, 100f/100f);
+        public Vector4 DNCCurrentStepColor = new Vector4(255f/255f, 255f/255f, 255f/255f, 100f/100f);
+        public Vector4 DNCStepEmboiteColor = new Vector4(255f/255f, 0f/255f, 0f/255f, 100f/100f);
+        public Vector4 DNCStepEntrechatColor = new Vector4(0f/255f, 0f/255f, 255f/255f, 100f/100f);
+        public Vector4 DNCStepJeteColor = new Vector4(0f/255f, 255f/255f, 0f/255f, 100f/100f);
+        public Vector4 DNCStepPirouetteColor = new Vector4(255f/255f, 215f/255f, 0f/255f, 100f/100f);
+        public Vector4 DNCEmptyColor = new Vector4(143f/255f, 141f/255f, 142f/255f, 100f/100f);
+        public Vector4 DNCDanceReadyColor = new Vector4(255f/255f, 215f/255f, 0f/255f, 100f/100f);
+        public Vector4 DNCDevilmentColor = new Vector4(52f/255f, 78f/255f, 29f/255f, 100f/100f);
+
+        #endregion
+
         [JsonIgnore] private DalamudPluginInterface _pluginInterface;
         [JsonIgnore] public ImFontPtr BigNoodleTooFont = null;
         [JsonIgnore] public TextureWrap BannerImage = null;
@@ -811,6 +873,14 @@ namespace DelvUI {
                     ["background"] = ImGui.ColorConvertFloat4ToU32(PLDAtonementColor.AdjustColor(-.8f)),
                     ["gradientLeft"] = ImGui.ColorConvertFloat4ToU32(PLDAtonementColor.AdjustColor(-.1f)),
                     ["gradientRight"] = ImGui.ColorConvertFloat4ToU32(PLDAtonementColor.AdjustColor(.1f))
+                },
+                
+                [Jobs.PLD * 1000 + 6] = new Dictionary<string, uint> // DoT
+                {
+                    ["base"] = ImGui.ColorConvertFloat4ToU32(PLDDoTColor),
+                    ["background"] = ImGui.ColorConvertFloat4ToU32(PLDDoTColor.AdjustColor(-.8f)),
+                    ["gradientLeft"] = ImGui.ColorConvertFloat4ToU32(PLDDoTColor.AdjustColor(-.1f)),
+                    ["gradientRight"] = ImGui.ColorConvertFloat4ToU32(PLDDoTColor.AdjustColor(.1f))
                 },
                 
                 [Jobs.WAR] = new Dictionary<string, uint>
@@ -1545,6 +1615,110 @@ namespace DelvUI {
                     ["background"] = ImGui.ColorConvertFloat4ToU32(JobColorDNC.AdjustColor(-.8f)),
                     ["gradientLeft"] = ImGui.ColorConvertFloat4ToU32(JobColorDNC.AdjustColor(-.1f)),
                     ["gradientRight"] = ImGui.ColorConvertFloat4ToU32(JobColorDNC.AdjustColor(.1f))
+                },
+
+                [Jobs.DNC * 1000] = new Dictionary<string, uint> // Esprit
+                {
+                    ["base"] = ImGui.ColorConvertFloat4ToU32(DNCEspritColor),
+                    ["background"] = ImGui.ColorConvertFloat4ToU32(DNCEspritColor.AdjustColor(-.8f)),
+                    ["gradientLeft"] = ImGui.ColorConvertFloat4ToU32(DNCEspritColor.AdjustColor(-.1f)),
+                    ["gradientRight"] = ImGui.ColorConvertFloat4ToU32(DNCEspritColor.AdjustColor(.1f))
+                },
+
+                [Jobs.DNC * 1000 + 1] = new Dictionary<string, uint> // Feathers
+                {
+                    ["base"] = ImGui.ColorConvertFloat4ToU32(DNCFeatherColor),
+                    ["background"] = ImGui.ColorConvertFloat4ToU32(DNCFeatherColor.AdjustColor(-.8f)),
+                    ["gradientLeft"] = ImGui.ColorConvertFloat4ToU32(DNCFeatherColor.AdjustColor(-.1f)),
+                    ["gradientRight"] = ImGui.ColorConvertFloat4ToU32(DNCFeatherColor.AdjustColor(.1f))
+                },
+
+                [Jobs.DNC * 1000 + 2] = new Dictionary<string, uint> // Flourishing Fan Dance Proc
+                {
+                    ["base"] = ImGui.ColorConvertFloat4ToU32(DNCFlourishingProcColor),
+                    ["background"] = ImGui.ColorConvertFloat4ToU32(DNCFlourishingProcColor.AdjustColor(-.8f)),
+                    ["gradientLeft"] = ImGui.ColorConvertFloat4ToU32(DNCFlourishingProcColor.AdjustColor(-.1f)),
+                    ["gradientRight"] = ImGui.ColorConvertFloat4ToU32(DNCFlourishingProcColor.AdjustColor(.1f))
+                },
+
+                [Jobs.DNC * 1000 + 3] = new Dictionary<string, uint> // Standard Finish
+                {
+                    ["base"] = ImGui.ColorConvertFloat4ToU32(DNCStandardFinishColor),
+                    ["background"] = ImGui.ColorConvertFloat4ToU32(DNCStandardFinishColor.AdjustColor(-.8f)),
+                    ["gradientLeft"] = ImGui.ColorConvertFloat4ToU32(DNCStandardFinishColor.AdjustColor(-.1f)),
+                    ["gradientRight"] = ImGui.ColorConvertFloat4ToU32(DNCStandardFinishColor.AdjustColor(.1f))
+                },
+
+                [Jobs.DNC * 1000 + 4] = new Dictionary<string, uint> // Technical Finish
+                {
+                    ["base"] = ImGui.ColorConvertFloat4ToU32(DNCTechnicalFinishColor),
+                    ["background"] = ImGui.ColorConvertFloat4ToU32(DNCTechnicalFinishColor.AdjustColor(-.8f)),
+                    ["gradientLeft"] = ImGui.ColorConvertFloat4ToU32(DNCTechnicalFinishColor.AdjustColor(-.1f)),
+                    ["gradientRight"] = ImGui.ColorConvertFloat4ToU32(DNCTechnicalFinishColor.AdjustColor(.1f))
+                },
+
+                [Jobs.DNC * 1000 + 5] = new Dictionary<string, uint> // Current Step Glow
+                {
+                    ["base"] = ImGui.ColorConvertFloat4ToU32(DNCCurrentStepColor),
+                    ["background"] = ImGui.ColorConvertFloat4ToU32(DNCCurrentStepColor.AdjustColor(-.8f)),
+                    ["gradientLeft"] = ImGui.ColorConvertFloat4ToU32(DNCCurrentStepColor.AdjustColor(-.1f)),
+                    ["gradientRight"] = ImGui.ColorConvertFloat4ToU32(DNCCurrentStepColor.AdjustColor(.1f))
+                },
+
+                [Jobs.DNC * 1000 + 6] = new Dictionary<string, uint> // Emboite
+                {
+                    ["base"] = ImGui.ColorConvertFloat4ToU32(DNCStepEmboiteColor),
+                    ["background"] = ImGui.ColorConvertFloat4ToU32(DNCStepEmboiteColor.AdjustColor(-.8f)),
+                    ["gradientLeft"] = ImGui.ColorConvertFloat4ToU32(DNCStepEmboiteColor.AdjustColor(-.1f)),
+                    ["gradientRight"] = ImGui.ColorConvertFloat4ToU32(DNCStepEmboiteColor.AdjustColor(.1f))
+                },
+
+                [Jobs.DNC * 1000 + 7] = new Dictionary<string, uint> // Entrechat
+                {
+                    ["base"] = ImGui.ColorConvertFloat4ToU32(DNCStepEntrechatColor),
+                    ["background"] = ImGui.ColorConvertFloat4ToU32(DNCStepEntrechatColor.AdjustColor(-.8f)),
+                    ["gradientLeft"] = ImGui.ColorConvertFloat4ToU32(DNCStepEntrechatColor.AdjustColor(-.1f)),
+                    ["gradientRight"] = ImGui.ColorConvertFloat4ToU32(DNCStepEntrechatColor.AdjustColor(.1f))
+                },
+
+                [Jobs.DNC * 1000 + 8] = new Dictionary<string, uint> // Jete
+                {
+                    ["base"] = ImGui.ColorConvertFloat4ToU32(DNCStepJeteColor),
+                    ["background"] = ImGui.ColorConvertFloat4ToU32(DNCStepJeteColor.AdjustColor(-.8f)),
+                    ["gradientLeft"] = ImGui.ColorConvertFloat4ToU32(DNCStepJeteColor.AdjustColor(-.1f)),
+                    ["gradientRight"] = ImGui.ColorConvertFloat4ToU32(DNCStepJeteColor.AdjustColor(.1f))
+                },
+
+                [Jobs.DNC * 1000 + 9] = new Dictionary<string, uint> // Pirouette
+                {
+                    ["base"] = ImGui.ColorConvertFloat4ToU32(DNCStepPirouetteColor),
+                    ["background"] = ImGui.ColorConvertFloat4ToU32(DNCStepPirouetteColor.AdjustColor(-.8f)),
+                    ["gradientLeft"] = ImGui.ColorConvertFloat4ToU32(DNCStepPirouetteColor.AdjustColor(-.1f)),
+                    ["gradientRight"] = ImGui.ColorConvertFloat4ToU32(DNCStepPirouetteColor.AdjustColor(.1f))
+                },
+
+                [Jobs.DNC * 1000 + 10] = new Dictionary<string, uint> // DNC Bar not full
+                {
+                    ["base"] = ImGui.ColorConvertFloat4ToU32(DNCEmptyColor),
+                    ["background"] = ImGui.ColorConvertFloat4ToU32(DNCEmptyColor.AdjustColor(-.8f)),
+                    ["gradientLeft"] = ImGui.ColorConvertFloat4ToU32(DNCEmptyColor.AdjustColor(-.1f)),
+                    ["gradientRight"] = ImGui.ColorConvertFloat4ToU32(DNCEmptyColor.AdjustColor(.1f))
+                },
+
+                [Jobs.DNC * 1000 + 11] = new Dictionary<string, uint> // Dance ready glow
+                {
+                    ["base"] = ImGui.ColorConvertFloat4ToU32(DNCDanceReadyColor),
+                    ["background"] = ImGui.ColorConvertFloat4ToU32(DNCDanceReadyColor.AdjustColor(-.8f)),
+                    ["gradientLeft"] = ImGui.ColorConvertFloat4ToU32(DNCDanceReadyColor.AdjustColor(-.1f)),
+                    ["gradientRight"] = ImGui.ColorConvertFloat4ToU32(DNCDanceReadyColor.AdjustColor(.1f))
+                },
+
+                [Jobs.DNC * 1000 + 12] = new Dictionary<string, uint> // Devilment
+                {
+                    ["base"] = ImGui.ColorConvertFloat4ToU32(DNCDevilmentColor),
+                    ["background"] = ImGui.ColorConvertFloat4ToU32(DNCDevilmentColor.AdjustColor(-.8f)),
+                    ["gradientLeft"] = ImGui.ColorConvertFloat4ToU32(DNCDevilmentColor.AdjustColor(-.1f)),
+                    ["gradientRight"] = ImGui.ColorConvertFloat4ToU32(DNCDevilmentColor.AdjustColor(.1f))
                 },
 
                 [Jobs.BLM] = new Dictionary<string, uint>
