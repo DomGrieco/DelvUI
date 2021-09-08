@@ -9,6 +9,6 @@
         Magic = 5,
         Darkness = 6,
         Physical = 7,
-        LimitBreak = 8,
+        LimitBreak = 8
     }
 }

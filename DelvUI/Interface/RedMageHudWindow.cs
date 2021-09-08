@@ -1,14 +1,19 @@
-﻿using System;
+﻿using Dalamud.Game.ClientState.Structs.JobGauge;
+using Dalamud.Plugin;
+using DelvUI.Config;
+using ImGuiNET;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
-using Dalamud.Game.ClientState.Structs.JobGauge;
-using Dalamud.Plugin;
-using ImGuiNET;
 
-namespace DelvUI.Interface {
-    public class RedMageHudWindow : HudWindow {
+namespace DelvUI.Interface
+{
+    public class RedMageHudWindow : HudWindow
+    {
+        public RedMageHudWindow(DalamudPluginInterface pluginInterface, PluginConfiguration pluginConfiguration) : base(pluginInterface, pluginConfiguration) { }
+
         public override uint JobId => Jobs.RDM;
 
         private float OriginY => CenterY + YOffset + PluginConfiguration.RDMVerticalOffset;
@@ -59,11 +64,8 @@ namespace DelvUI.Interface {
         private Dictionary<string, uint> DualcastBarColor => PluginConfiguration.JobColorMap[Jobs.RDM * 1000 + 6];
         private Dictionary<string, uint> VerstoneBarColor => PluginConfiguration.JobColorMap[Jobs.RDM * 1000 + 7];
         private Dictionary<string, uint> VerfireBarColor => PluginConfiguration.JobColorMap[Jobs.RDM * 1000 + 8];
-        
 
-        public RedMageHudWindow(DalamudPluginInterface pluginInterface, PluginConfiguration pluginConfiguration) : base(pluginInterface, pluginConfiguration) { }
-
-        protected override void Draw(bool _) 
+        protected override void Draw(bool _)
         {
             DrawBalanceBar();
             DrawWhiteManaBar();
@@ -86,11 +88,11 @@ namespace DelvUI.Interface {
             }
         }
 
-        protected override void DrawPrimaryResourceBar() 
+        protected override void DrawPrimaryResourceBar()
         {
             Debug.Assert(PluginInterface.ClientState.LocalPlayer != null, "PluginInterface.ClientState.LocalPlayer != null");
             var actor = PluginInterface.ClientState.LocalPlayer;
-            var scale = (float) actor.CurrentMp / actor.MaxMp;
+            var scale = (float)actor.CurrentMp / actor.MaxMp;
             var barSize = new Vector2(ManaBarWidth, ManaBarHeight);
             var cursorPos = new Vector2(OriginX - barSize.X / 2 + ManaBarXOffset, OriginY - barSize.Y + ManaBarYOffset);
             var color = ShowManaThresholdMarker && actor.CurrentMp < ManaThresholdValue ? ManaBarBelowThresholdColor : ManaBarColor;
@@ -102,8 +104,12 @@ namespace DelvUI.Interface {
             if (scale > 0)
             {
                 drawList.AddRectFilledMultiColor(
-                    cursorPos, cursorPos + new Vector2(Math.Max(1, barSize.X * scale), barSize.Y),
-                    color["gradientLeft"], color["gradientRight"], color["gradientRight"], color["gradientLeft"]
+                    cursorPos,
+                    cursorPos + new Vector2(Math.Max(1, barSize.X * scale), barSize.Y),
+                    color["gradientLeft"],
+                    color["gradientRight"],
+                    color["gradientRight"],
+                    color["gradientLeft"]
                 );
             }
 
@@ -112,13 +118,17 @@ namespace DelvUI.Interface {
             // threshold
             if (ShowManaThresholdMarker)
             {
-                var position = new Vector2(cursorPos.X + (ManaThresholdValue / 10000f) * barSize.X - 3, cursorPos.Y);
+                var position = new Vector2(cursorPos.X + ManaThresholdValue / 10000f * barSize.X - 3, cursorPos.Y);
                 var size = new Vector2(2, barSize.Y);
                 drawList.AddRect(position, position + size, 0xFF000000);
             }
 
             // text
-            if (!ShowManaValue) return;
+            if (!ShowManaValue)
+            {
+                return;
+            }
+
             var mana = PluginInterface.ClientState.LocalPlayer.CurrentMp;
             var text = $"{mana,0}";
             var textSize = ImGui.CalcTextSize(text);
@@ -132,8 +142,9 @@ namespace DelvUI.Interface {
             var blackGauge = (float)PluginInterface.ClientState.JobGauges.Get<RDMGauge>().BlackGauge;
             var scale = gauge.WhiteGauge - gauge.BlackGauge;
             var barSize = new Vector2(BalanceBarWidth, BalanceBarHeight);
+
             var cursorPos = new Vector2(
-                OriginX - barSize.X /2f + BalanceBarXOffset, 
+                OriginX - barSize.X / 2f + BalanceBarXOffset,
                 OriginY + BalanceBarYOffset
             );
 
@@ -141,18 +152,29 @@ namespace DelvUI.Interface {
             drawList.AddRectFilled(cursorPos, cursorPos + barSize, 0x88000000);
 
             Dictionary<string, uint> color = null;
+
             if (whiteGauge >= 80 && blackGauge >= 80)
+            {
                 color = BalanceColor;
+            }
             else if (scale >= 30)
+            {
                 color = WhiteManaBarColor;
+            }
             else if (scale <= -30)
+            {
                 color = BlackManaBarColor;
+            }
 
             if (color != null)
             {
                 drawList.AddRectFilledMultiColor(
-                    cursorPos, cursorPos + barSize,
-                    color["gradientLeft"], color["gradientRight"], color["gradientRight"], color["gradientLeft"]
+                    cursorPos,
+                    cursorPos + barSize,
+                    color["gradientLeft"],
+                    color["gradientRight"],
+                    color["gradientRight"],
+                    color["gradientLeft"]
                 );
             }
 
@@ -164,6 +186,7 @@ namespace DelvUI.Interface {
             var gauge = (int)PluginInterface.ClientState.JobGauges.Get<RDMGauge>().WhiteGauge;
             var scale = gauge / 100f;
             var size = new Vector2(WhiteManaBarWidth, WhiteManaBarHeight);
+
             var position = new Vector2(
                 OriginX + WhiteManaBarXOffset,
                 OriginY + WhiteManaBarYOffset
@@ -177,6 +200,7 @@ namespace DelvUI.Interface {
             var gauge = (int)PluginInterface.ClientState.JobGauges.Get<RDMGauge>().BlackGauge;
             var scale = gauge / 100f;
             var size = new Vector2(BlackManaBarWidth, BlackManaBarHeight);
+
             var position = new Vector2(
                 OriginX + BlackManaBarXOffset,
                 OriginY + BlackManaBarYOffset
@@ -197,9 +221,14 @@ namespace DelvUI.Interface {
             if (scale > 0)
             {
                 var barStartPos = inversed ? new Vector2(origin.X + size.X * (1 - scale), origin.Y) : origin;
+
                 drawList.AddRectFilledMultiColor(
-                    barStartPos, barStartPos + new Vector2(Math.Max(1, size.X * scale), size.Y),
-                    color["gradientLeft"], color["gradientRight"], color["gradientRight"], color["gradientLeft"]
+                    barStartPos,
+                    barStartPos + new Vector2(Math.Max(1, size.X * scale), size.Y),
+                    color["gradientLeft"],
+                    color["gradientRight"],
+                    color["gradientRight"],
+                    color["gradientLeft"]
                 );
             }
 
@@ -212,70 +241,89 @@ namespace DelvUI.Interface {
             drawList.AddRect(thresholdPos, thresholdPos + new Vector2(2, size.Y), 0xFF000000);
 
             // text
-            if (!showText) return;
+            if (!showText)
+            {
+                return;
+            }
+
             var text = $"{value}";
             var textSize = ImGui.CalcTextSize(text);
             var textPos = inversed ? new Vector2(origin.X + size.X - 10 - textSize.X, origin.Y - 2) : new Vector2(origin.X + 10, origin.Y - 2);
             DrawOutlinedText(text, textPos);
         }
-        
+
         private void DrawAccelerationBar()
         {
             Debug.Assert(PluginInterface.ClientState.LocalPlayer != null, "PluginInterface.ClientState.LocalPlayer != null");
             var barSize = new Vector2(AccelBarWidth, AccelBarHeight);
             var totalWidth = barSize.X * 3 + HorizontalSpaceBetweenBars * 2;
+
             var cursorPos = new Vector2(
-                OriginX - totalWidth / 2 + AccelerationBarXOffset, 
+                OriginX - totalWidth / 2 + AccelerationBarXOffset,
                 OriginY + AccelerationBarYOffset
             );
+
             var accelBuff = PluginInterface.ClientState.LocalPlayer.StatusEffects.FirstOrDefault(o => o.EffectId == 1238);
-            
+
             var drawList = ImGui.GetWindowDrawList();
-            for (int i = 1; i <= 3; i++)
+
+            for (var i = 1; i <= 3; i++)
             {
                 drawList.AddRectFilled(cursorPos, cursorPos + barSize, AccelBarColor["background"]);
+
                 if (accelBuff.StackCount >= i)
                 {
                     drawList.AddRectFilledMultiColor(
-                        cursorPos, cursorPos + new Vector2(barSize.X, barSize.Y),
-                        AccelBarColor["gradientLeft"], AccelBarColor["gradientRight"], AccelBarColor["gradientRight"], AccelBarColor["gradientLeft"]
+                        cursorPos,
+                        cursorPos + new Vector2(barSize.X, barSize.Y),
+                        AccelBarColor["gradientLeft"],
+                        AccelBarColor["gradientRight"],
+                        AccelBarColor["gradientRight"],
+                        AccelBarColor["gradientLeft"]
                     );
                 }
+
                 drawList.AddRect(cursorPos, cursorPos + barSize, 0xFF000000);
 
                 cursorPos.X = cursorPos.X + barSize.X + HorizontalSpaceBetweenBars;
             }
-        }    
-        
-        private void DrawDualCastBar() 
+        }
+
+        private void DrawDualCastBar()
         {
             var barSize = new Vector2(DualCastWidth, DualCastHeight);
+
             var cursorPos = new Vector2(
-                OriginX - DualCastWidth / 2f + DualCastXOffset, 
+                OriginX - DualCastWidth / 2f + DualCastXOffset,
                 OriginY + DualCastYOffset
             );
-            
+
             var dualCastBuff = Math.Abs(PluginInterface.ClientState.LocalPlayer.StatusEffects.FirstOrDefault(o => o.EffectId == 1249).Duration);
-            
+
             var drawList = ImGui.GetWindowDrawList();
             drawList.AddRectFilled(cursorPos, cursorPos + barSize, DualcastBarColor["background"]);
-   
+
             if (dualCastBuff > 0)
             {
                 drawList.AddRectFilledMultiColor(
-                    cursorPos, cursorPos + barSize,
-                    DualcastBarColor["gradientLeft"], DualcastBarColor["gradientRight"], DualcastBarColor["gradientRight"], DualcastBarColor["gradientLeft"]
+                    cursorPos,
+                    cursorPos + barSize,
+                    DualcastBarColor["gradientLeft"],
+                    DualcastBarColor["gradientRight"],
+                    DualcastBarColor["gradientRight"],
+                    DualcastBarColor["gradientLeft"]
                 );
             }
 
             drawList.AddRect(cursorPos, cursorPos + barSize, 0xFF000000);
-        }  
+        }
 
         private void DrawVerstoneProc()
         {
             Debug.Assert(PluginInterface.ClientState.LocalPlayer != null, "PluginInterface.ClientState.LocalPlayer != null");
 
             var duration = Math.Abs(PluginInterface.ClientState.LocalPlayer.StatusEffects.FirstOrDefault(o => o.EffectId == 1235).Duration);
+
             if (duration == 0)
             {
                 return;
@@ -295,6 +343,7 @@ namespace DelvUI.Interface {
             Debug.Assert(PluginInterface.ClientState.LocalPlayer != null, "PluginInterface.ClientState.LocalPlayer != null");
 
             var duration = Math.Abs(PluginInterface.ClientState.LocalPlayer.StatusEffects.FirstOrDefault(o => o.EffectId == 1234).Duration);
+
             if (duration == 0)
             {
                 return;
@@ -319,8 +368,13 @@ namespace DelvUI.Interface {
             var leftColor = inverted ? colorMap["gradientRight"] : colorMap["gradientLeft"];
             var rightColor = inverted ? colorMap["gradientLeft"] : colorMap["gradientRight"];
 
-            drawList.AddRectFilledMultiColor(startPoint, startPoint + size,
-                leftColor, rightColor, rightColor, leftColor
+            drawList.AddRectFilledMultiColor(
+                startPoint,
+                startPoint + size,
+                leftColor,
+                rightColor,
+                rightColor,
+                leftColor
             );
         }
     }

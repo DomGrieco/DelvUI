@@ -1,65 +1,71 @@
-﻿using System;
-using System.Linq;
-using Dalamud.Game.Internal;
+﻿using Dalamud.Game.Internal;
 using Dalamud.Plugin;
 using ImGuiNET;
-using System.Diagnostics;
-using Dalamud.Game.ClientState.Actors.Types;
-
+using System;
+using System.Linq;
 
 namespace DelvUI.Helpers
 {
-    class MpTickHelper
+    internal class MpTickHelper
     {
-        protected readonly DalamudPluginInterface pluginInterface;
-
-        public const double serverTickRate = 3;
-        protected const float pollingRate = 1 / 30f;
-        protected double lastUpdate = 0;
-        protected double lastTickTime = 0;
-        private int lastMpValue = -1;
-
-        public double lastTick { get { return lastTickTime; } }
+        public const double ServerTickRate = 3;
+        protected const float PollingRate = 1 / 30f;
+        protected readonly DalamudPluginInterface PluginInterface;
+        private int _lastMpValue = -1;
+        protected double LastTickTime;
+        protected double LastUpdate;
 
         public MpTickHelper(DalamudPluginInterface pluginInterface)
         {
-            this.pluginInterface = pluginInterface;
-            this.pluginInterface.Framework.OnUpdateEvent += FrameworkOnOnUpdateEvent;
+            PluginInterface = pluginInterface;
+            PluginInterface.Framework.OnUpdateEvent += FrameworkOnOnUpdateEvent;
         }
+
+        public double LastTick => LastTickTime;
 
         private void FrameworkOnOnUpdateEvent(Framework framework)
         {
-            var player = pluginInterface.ClientState.LocalPlayer;
-            if (player is null || player is not PlayerCharacter) return;
+            var player = PluginInterface.ClientState.LocalPlayer;
 
-            var now = ImGui.GetTime();
-            if (now - lastUpdate < pollingRate)
+            if (player is null)
             {
                 return;
             }
-            lastUpdate = now;
+
+            var now = ImGui.GetTime();
+
+            if (now - LastUpdate < PollingRate)
+            {
+                return;
+            }
+
+            LastUpdate = now;
 
             var mp = player.CurrentMp;
 
             // account for lucid dreaming screwing up mp calculations
             var lucidDreamingActive = player.StatusEffects.Any(e => e.EffectId == 1204);
-            if (!lucidDreamingActive && lastMpValue < mp)
+
+            if (!lucidDreamingActive && _lastMpValue < mp)
             {
-                lastTickTime = now;
+                LastTickTime = now;
             }
-            else if (lastTickTime + serverTickRate <= now)
+            else if (LastTickTime + ServerTickRate <= now)
             {
-                lastTickTime += serverTickRate;
+                LastTickTime += ServerTickRate;
             }
 
-            lastMpValue = mp;
+            _lastMpValue = mp;
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposing) return;
+            if (!disposing)
+            {
+                return;
+            }
 
-            pluginInterface.Framework.OnUpdateEvent -= FrameworkOnOnUpdateEvent;
+            PluginInterface.Framework.OnUpdateEvent -= FrameworkOnOnUpdateEvent;
         }
 
         public void Dispose()
@@ -68,9 +74,6 @@ namespace DelvUI.Helpers
             GC.SuppressFinalize(this);
         }
 
-        ~MpTickHelper()
-        {
-            Dispose(true);
-        }
+        ~MpTickHelper() { Dispose(true); }
     }
 }

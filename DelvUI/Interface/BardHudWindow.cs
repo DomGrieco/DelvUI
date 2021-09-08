@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Numerics;
-using Dalamud.Game.ClientState.Actors.Types;
+﻿using Dalamud.Game.ClientState.Actors.Types;
 using Dalamud.Game.ClientState.Structs.JobGauge;
 using Dalamud.Plugin;
+using DelvUI.Config;
 using DelvUI.Interface.Bars;
 using ImGuiNET;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace DelvUI.Interface {
-    public class BardHudWindow : HudWindow {
+namespace DelvUI.Interface
+{
+    public class BardHudWindow : HudWindow
+    {
+        public BardHudWindow(DalamudPluginInterface pluginInterface, PluginConfiguration pluginConfiguration) : base(pluginInterface, pluginConfiguration) { }
+
         public override uint JobId => 23;
         private new int XOffset => PluginConfiguration.BRDBaseXOffset;
         private new int YOffset => PluginConfiguration.BRDBaseYOffset;
@@ -55,7 +58,6 @@ namespace DelvUI.Interface {
         private Dictionary<string, uint> SBColor => PluginConfiguration.JobColorMap[Jobs.BRD * 1000 + 8];
         private Dictionary<string, uint> CBColor => PluginConfiguration.JobColorMap[Jobs.BRD * 1000 + 9];
         private Dictionary<string, uint> SVColor => PluginConfiguration.JobColorMap[Jobs.BRD * 1000 + 10];
-        public BardHudWindow(DalamudPluginInterface pluginInterface, PluginConfiguration pluginConfiguration) : base(pluginInterface, pluginConfiguration) { }
 
         protected override void Draw(bool _)
         {
@@ -64,18 +66,22 @@ namespace DelvUI.Interface {
             DrawSoulVoiceBar();
         }
 
-        protected override void DrawPrimaryResourceBar()
-        {
-        }
+        protected override void DrawPrimaryResourceBar() { }
 
         private void DrawActiveDots()
         {
-            if (!BRDShowCB && !BRDShowSB) return;
-            var target = PluginInterface.ClientState.Targets.SoftTarget ?? PluginInterface.ClientState.Targets.CurrentTarget;
-
-            if (target is not Chara) {
+            if (!BRDShowCB && !BRDShowSB)
+            {
                 return;
             }
+
+            var target = PluginInterface.ClientState.Targets.SoftTarget ?? PluginInterface.ClientState.Targets.CurrentTarget;
+
+            if (target is not Chara)
+            {
+                return;
+            }
+
             var xPos = CenterX - XOffset + BRDCBXOffset;
             var yPos = CenterY + YOffset + BRDCBYOffset;
 
@@ -83,9 +89,12 @@ namespace DelvUI.Interface {
 
             if (BRDShowCB)
             {
-                var cb = target.StatusEffects.FirstOrDefault(o =>
-                    o.EffectId == 1200 && o.OwnerId == PluginInterface.ClientState.LocalPlayer.ActorId ||
-                    o.EffectId == 124 && o.OwnerId == PluginInterface.ClientState.LocalPlayer.ActorId);
+                var cb = target.StatusEffects.FirstOrDefault(
+                    o =>
+                        o.EffectId == 1200 && o.OwnerId == PluginInterface.ClientState.LocalPlayer.ActorId
+                     || o.EffectId == 124 && o.OwnerId == PluginInterface.ClientState.LocalPlayer.ActorId
+                );
+
                 var duration = Math.Abs(cb.Duration);
 
                 var color = duration <= 5 ? ExpireColor : CBColor;
@@ -93,8 +102,10 @@ namespace DelvUI.Interface {
                 var builder = BarBuilder.Create(xPos, yPos, BRDCBHeight, BRDCBWidth);
 
                 var cbBar = builder.AddInnerBar(duration, 30f, color)
-                    .SetFlipDrainDirection(BRDCBInverted)
-                    .Build();
+                                   .SetFlipDrainDirection(BRDCBInverted)
+                                   .SetBackgroundColor(EmptyColor["background"])
+                                   .Build();
+
                 barDrawList.Add(cbBar);
             }
 
@@ -103,9 +114,12 @@ namespace DelvUI.Interface {
 
             if (BRDShowSB)
             {
-                var sb = target.StatusEffects.FirstOrDefault(o =>
-                    o.EffectId == 1201 && o.OwnerId == PluginInterface.ClientState.LocalPlayer.ActorId ||
-                    o.EffectId == 129 && o.OwnerId == PluginInterface.ClientState.LocalPlayer.ActorId);
+                var sb = target.StatusEffects.FirstOrDefault(
+                    o =>
+                        o.EffectId == 1201 && o.OwnerId == PluginInterface.ClientState.LocalPlayer.ActorId
+                     || o.EffectId == 129 && o.OwnerId == PluginInterface.ClientState.LocalPlayer.ActorId
+                );
+
                 var duration = Math.Abs(sb.Duration);
 
                 var color = duration <= 5 ? ExpireColor : SBColor;
@@ -113,19 +127,23 @@ namespace DelvUI.Interface {
                 var builder = BarBuilder.Create(xPos, yPos, BRDSBHeight, BRDSBWidth);
 
                 var sbBar = builder.AddInnerBar(duration, 30f, color)
-                    .SetFlipDrainDirection(BRDSBInverted)
-                    .Build();
-                barDrawList.Add(sbBar);
+                                   .SetFlipDrainDirection(BRDSBInverted)
+                                   .SetBackgroundColor(EmptyColor["background"])
+                                   .Build();
 
+                barDrawList.Add(sbBar);
             }
 
-            if (barDrawList.Count > 0)
+            if (barDrawList.Count <= 0)
             {
-                var drawList = ImGui.GetWindowDrawList();
-                foreach (var bar in barDrawList)
-                {
-                    bar.Draw(drawList);
-                }
+                return;
+            }
+
+            var drawList = ImGui.GetWindowDrawList();
+
+            foreach (var bar in barDrawList)
+            {
+                bar.Draw(drawList, PluginConfiguration);
             }
         }
 
@@ -140,24 +158,42 @@ namespace DelvUI.Interface {
             {
                 case CurrentSong.WANDERER:
                     if (BRDShowWMStacks)
+                    {
                         DrawStacks(songStacks, 3, WMStackColor);
+                    }
+
                     DrawSongTimer(songTimer, WMColor);
+
                     break;
+
                 case CurrentSong.MAGE:
                     if (BRDShowMBProc)
+                    {
                         DrawBloodletterReady(MBStackColor);
+                    }
+
                     DrawSongTimer(songTimer, MBColor);
+
                     break;
+
                 case CurrentSong.ARMY:
                     if (BRDShowAPStacks)
+                    {
                         DrawStacks(songStacks, 4, APStackColor);
+                    }
+
                     DrawSongTimer(songTimer, APColor);
+
                     break;
+
                 case CurrentSong.NONE:
                     DrawSongTimer(0, EmptyColor);
+
                     break;
+
                 default:
                     DrawSongTimer(0, EmptyColor);
+
                     break;
             }
         }
@@ -170,7 +206,11 @@ namespace DelvUI.Interface {
 
         private void DrawSongTimer(short songTimer, Dictionary<string, uint> songColor)
         {
-            if (!BRDShowSongGauge) return;
+            if (!BRDShowSongGauge)
+            {
+                return;
+            }
+
             var xPos = CenterX - XOffset + BRDSongGaugeXOffset;
             var yPos = CenterY + YOffset + BRDSongGaugeYOffset;
 
@@ -179,17 +219,22 @@ namespace DelvUI.Interface {
             var duration = Math.Abs(songTimer);
 
             var bar = builder.AddInnerBar(duration / 1000f, 30f, songColor)
-                .SetTextMode(BarTextMode.EachChunk)
-                .SetText(BarTextPosition.CenterMiddle, BarTextType.Current)
-                .Build();
+                             .SetTextMode(BarTextMode.EachChunk)
+                             .SetText(BarTextPosition.CenterMiddle, BarTextType.Current)
+                             .SetBackgroundColor(EmptyColor["background"])
+                             .Build();
 
             var drawList = ImGui.GetWindowDrawList();
-            bar.Draw(drawList);
+            bar.Draw(drawList, PluginConfiguration);
         }
 
         private void DrawSoulVoiceBar()
         {
-            if (!BRDShowSoulGauge) return;
+            if (!BRDShowSoulGauge)
+            {
+                return;
+            }
+
             var soulVoice = PluginInterface.ClientState.JobGauges.Get<BRDGauge>().SoulVoiceValue;
 
             var xPos = CenterX - XOffset + BRDSoulGaugeXOffset;
@@ -198,23 +243,27 @@ namespace DelvUI.Interface {
             var builder = BarBuilder.Create(xPos, yPos, BRDSoulGaugeHeight, BRDSoulGaugeWidth);
 
             var bar = builder.AddInnerBar(soulVoice, 100f, SVColor)
-                .Build();
+                             .SetBackgroundColor(EmptyColor["background"])
+                             .Build();
 
             var drawList = ImGui.GetWindowDrawList();
-            bar.Draw(drawList);
+            bar.Draw(drawList, PluginConfiguration);
         }
 
         private void DrawStacks(int amount, int max, Dictionary<string, uint> stackColor)
         {
             var xPos = CenterX - XOffset + BRDStackXOffset;
             var yPos = CenterY + YOffset + BRDStackYOffset;
+
             var bar = BarBuilder.Create(xPos, yPos, BRDStackHeight, BRDStackWidth)
-                .SetChunks(max)
-                .SetChunkPadding(BRDStackPadding)
-                .AddInnerBar(amount, max, stackColor)
-                .Build();
+                                .SetChunks(max)
+                                .SetChunkPadding(BRDStackPadding)
+                                .AddInnerBar(amount, max, stackColor)
+                                .SetBackgroundColor(EmptyColor["background"])
+                                .Build();
+
             var drawList = ImGui.GetWindowDrawList();
-            bar.Draw(drawList);
+            bar.Draw(drawList, PluginConfiguration);
         }
     }
 }

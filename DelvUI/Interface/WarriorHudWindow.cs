@@ -1,20 +1,27 @@
-﻿using System;
+﻿using Dalamud.Game.ClientState.Structs.JobGauge;
+using Dalamud.Plugin;
+using DelvUI.Config;
+using DelvUI.Interface.Bars;
+using ImGuiNET;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Dalamud.Game.ClientState.Structs.JobGauge;
-using Dalamud.Plugin;
-using DelvUI.Interface.Bars;
-using ImGuiNET;
 
 namespace DelvUI.Interface
 {
     public class WarriorHudWindow : HudWindow
     {
+        public WarriorHudWindow(DalamudPluginInterface pluginInterface, PluginConfiguration pluginConfiguration) : base(pluginInterface, pluginConfiguration) { }
+
         public override uint JobId => 21;
+
+        private int BaseXOffset => PluginConfiguration.WARBaseXOffset;
+        private int BaseYOffset => PluginConfiguration.WARBaseYOffset;
 
         private bool StormsEyeEnabled => PluginConfiguration.WARStormsEyeEnabled;
         private bool StormsEyeText => PluginConfiguration.WARStormsEyeText;
+        private float StormsEyeTextScale => PluginConfiguration.WARStormsEyeTextScale;
         private int StormsEyeHeight => PluginConfiguration.WARStormsEyeHeight;
         private int StormsEyeWidth => PluginConfiguration.WARStormsEyeWidth;
 
@@ -23,6 +30,7 @@ namespace DelvUI.Interface
 
         private bool BeastGaugeEnabled => PluginConfiguration.WARBeastGaugeEnabled;
         private bool BeastGaugeText => PluginConfiguration.WARBeastGaugeText;
+        private float BeastGaugeTextScale => PluginConfiguration.WARBeastGaugeTextScale;
         private int BeastGaugeHeight => PluginConfiguration.WARBeastGaugeHeight;
         private int BeastGaugeWidth => PluginConfiguration.WARBeastGaugeWidth;
         private int BeastGaugePadding => PluginConfiguration.WARBeastGaugePadding;
@@ -35,31 +43,36 @@ namespace DelvUI.Interface
         private Dictionary<string, uint> NascentChaosColor => PluginConfiguration.JobColorMap[Jobs.WAR * 1000 + 3];
         private Dictionary<string, uint> EmptyColor => PluginConfiguration.JobColorMap[Jobs.WAR * 1000 + 4];
 
-        public WarriorHudWindow(DalamudPluginInterface pluginInterface, PluginConfiguration pluginConfiguration) : base(pluginInterface, pluginConfiguration) { }
-
-        protected override void Draw(bool _) {
+        protected override void Draw(bool _)
+        {
             if (StormsEyeEnabled)
+            {
                 DrawStormsEyeBar();
+            }
+
             if (BeastGaugeEnabled)
+            {
                 DrawBeastGauge();
+            }
         }
 
-        protected override void DrawPrimaryResourceBar() {
-        }
+        protected override void DrawPrimaryResourceBar() { }
 
-        private void DrawStormsEyeBar() {
+        private void DrawStormsEyeBar()
+        {
             Debug.Assert(PluginInterface.ClientState.LocalPlayer != null, "PluginInterface.ClientState.LocalPlayer != null");
             var innerReleaseBuff = PluginInterface.ClientState.LocalPlayer.StatusEffects.Where(o => o.EffectId == 1177);
             var stormsEyeBuff = PluginInterface.ClientState.LocalPlayer.StatusEffects.Where(o => o.EffectId == 90);
 
-            var xPos = CenterX - StormsEyeXOffset;
-            var yPos = CenterY + StormsEyeYOffset;
+            var xPos = CenterX + BaseXOffset - StormsEyeXOffset;
+            var yPos = CenterY + BaseYOffset + StormsEyeYOffset;
 
-            var builder = BarBuilder.Create(xPos, yPos, StormsEyeHeight, StormsEyeWidth);
+            var builder = BarBuilder.Create(xPos, yPos, StormsEyeHeight, StormsEyeWidth).SetBackgroundColor(EmptyColor["background"]);
 
             var duration = 0f;
             var maximum = 10f;
             var color = EmptyColor;
+
             if (innerReleaseBuff.Any())
             {
                 duration = Math.Abs(innerReleaseBuff.First().Duration);
@@ -77,34 +90,40 @@ namespace DelvUI.Interface
             if (StormsEyeText)
             {
                 builder.SetTextMode(BarTextMode.EachChunk)
-                    .SetText(new BarText(BarTextPosition.CenterMiddle, BarTextType.Current));
+                       .SetText(BarTextPosition.CenterMiddle, BarTextType.Current, StormsEyeTextScale);
             }
 
             var drawList = ImGui.GetWindowDrawList();
-            builder.Build().Draw(drawList);
+            builder.Build().Draw(drawList, PluginConfiguration);
         }
 
-        private void DrawBeastGauge() {
+        private void DrawBeastGauge()
+        {
             var gauge = PluginInterface.ClientState.JobGauges.Get<WARGauge>();
             var nascentChaosBuff = PluginInterface.ClientState.LocalPlayer.StatusEffects.Where(o => o.EffectId == 1897);
 
-            var xPos = CenterX - BeastGaugeXOffset;
-            var yPos = CenterY + BeastGaugeYOffset;
+            var xPos = CenterX + BaseXOffset - BeastGaugeXOffset;
+            var yPos = CenterY + BaseYOffset + BeastGaugeYOffset;
 
             var builder = BarBuilder.Create(xPos, yPos, BeastGaugeHeight, BeastGaugeWidth)
-                .SetChunks(2)
-                .AddInnerBar(gauge.BeastGaugeAmount, 100, FellCleaveColor, EmptyColor)
-                .SetChunkPadding(BeastGaugePadding);
+                                    .SetChunks(2)
+                                    .AddInnerBar(gauge.BeastGaugeAmount, 100, FellCleaveColor)
+                                    .SetBackgroundColor(EmptyColor["background"])
+                                    .SetChunkPadding(BeastGaugePadding);
+
             if (nascentChaosBuff.Any())
+            {
                 builder.SetChunksColors(NascentChaosColor);
+            }
+
             if (BeastGaugeText)
             {
                 builder.SetTextMode(BarTextMode.EachChunk)
-                    .SetText(new BarText(BarTextPosition.CenterMiddle, BarTextType.Current));
+                       .SetText(BarTextPosition.CenterMiddle, BarTextType.Current, BeastGaugeTextScale);
             }
 
             var drawList = ImGui.GetWindowDrawList();
-            builder.Build().Draw(drawList);
+            builder.Build().Draw(drawList, PluginConfiguration);
         }
     }
 }
